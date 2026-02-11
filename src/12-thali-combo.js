@@ -53,17 +53,65 @@
  *   // => "RAJASTHANI THALI (Veg) - Items: dal - Rs.250.00"
  */
 export function createThaliDescription(thali) {
-  // Your code here
+  if(typeof thali !== 'object' || thali === null || !thali.hasOwnProperty("name") || !thali.hasOwnProperty("items") || !thali.hasOwnProperty("price") || !thali.hasOwnProperty("isVeg")) return "";
+  return `${thali.name.toUpperCase()} ${thali.isVeg ? "(Veg)" : "(Non-Veg)"} - Items: ${thali.items.join(", ")} - Rs.${thali.price.toFixed(2)}`
 }
 
 export function getThaliStats(thalis) {
-  // Your code here
+  if(!Array.isArray(thalis) || thalis.length <= 0) return null;
+  return {
+    totalThalis: thalis.length,
+    vegCount: thalis.filter(({isVeg}) => isVeg).length,
+    nonVegCount: thalis.filter(({isVeg}) => !isVeg).length,
+    avgPrice: (thalis.reduce((cValue, {price}) => cValue += price, 0) / thalis.length).toFixed(2),
+    cheapest: Math.min(...thalis.map(({price}) => price)),
+    costliest: Math.max(...thalis.map(({price}) => price)),
+    names: thalis.map(({name}) => name)
+  }
 }
 
 export function searchThaliMenu(thalis, query) {
-  // Your code here
+  if(!Array.isArray(thalis) || typeof query !== "string") return [];
+  return thalis.filter(({name, items}) => name.toLowerCase().includes(query.toLowerCase()) || items.some(item => item.toLowerCase().includes(query.toLowerCase())))
 }
 
 export function generateThaliReceipt(customerName, thalis) {
-  // Your code here
+  if(typeof customerName !== "string" || !Array.isArray(thalis) || thalis.length <= 0) return "";
+  return `THALI RECEIPT\n---\nCustomer: ${customerName.toUpperCase()}\n${thalis.map(({name, price}) => `- ${name} x Rs.${price}`)}\n---\nTotal: Rs.${thalis.reduce((cValue, {price}) => cValue + price, 0).toFixed(2)}\nItems: ${thalis.length}`
 }
+
+const thaliss = [
+  {
+    name: "Rajasthani Thali",
+    items: ["dal baati", "churma", "papad"],
+    price: 250,
+    isVeg: true
+ },
+  {
+    name: "Rajasthani Thali",
+    items: ["dal baati", "churma", "papad"],
+    price: 250,
+    isVeg: true
+ },
+  {
+    name: "Rajasthani Thali",
+    items: ["dal baati", "churma", "papad"],
+    price: 250,
+    isVeg: true
+ },
+  {
+    name: "Rajasthani Thali",
+    items: ["dal baati", "churma", "papad"],
+    price: 250,
+    isVeg: true
+ },
+  {
+    name: "Rajasthani Thali",
+    items: ["dal baati", "churma", "papad"],
+    price: 250,
+    isVeg: true
+ },
+]
+
+
+generateThaliReceipt(thaliss)
