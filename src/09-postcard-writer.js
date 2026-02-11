@@ -52,7 +52,7 @@
  *   countVowels("Namaste")     // => 3
  */
 
-const isValidStr = (str) => typeof str !== "string" || str.trim() === "";
+const isValidStr = (str) => typeof str === "string" && str.trim() !== "";
 
 export function writePostcard(sender, receiver, message) {
   if(!isValidStr(sender) || !isValidStr(receiver) || !isValidStr(message)) return "";
@@ -72,5 +72,5 @@ export function isFromState(address, stateCode) {
 }
 
 export function countVowels(message) {
-  return !isValidStr(message) ? 0 : message.match(/[aeiouAEIOU]/g).length;
+  return typeof message !== "string" || message.trim() === "" ? 0 : (message.match(/[aeiouAEIOU]/g) || []).length;
 }
